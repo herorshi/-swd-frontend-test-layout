@@ -1,165 +1,415 @@
 .page {
-  --gray-rgb: 0, 0, 0;
-  --gray-alpha-200: rgba(var(--gray-rgb), 0.08);
-  --gray-alpha-100: rgba(var(--gray-rgb), 0.05);
-
-  --button-primary-hover: #383838;
-  --button-secondary-hover: #f2f2f2;
-
-  display: grid;
-  grid-template-rows: 20px 1fr 20px;
-  align-items: center;
-  justify-items: center;
-  min-height: 100svh;
-  padding: 80px;
-  gap: 64px;
-  font-family: var(--font-geist-sans);
-}
-
-@media (prefers-color-scheme: dark) {
-  .page {
-    --gray-rgb: 255, 255, 255;
-    --gray-alpha-200: rgba(var(--gray-rgb), 0.145);
-    --gray-alpha-100: rgba(var(--gray-rgb), 0.06);
-
-    --button-primary-hover: #ccc;
-    --button-secondary-hover: #1a1a1a;
-  }
-}
-
-.main {
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: linear-gradient(90deg, #6eda78 0%, #ffa200 100%);
+  padding: 28px 40px 48px;
+  font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+  color: #000;
   display: flex;
   flex-direction: column;
-  gap: 32px;
-  grid-row-start: 2;
+  box-sizing: border-box;
 }
 
-.main ol {
-  font-family: var(--font-geist-mono);
-  padding-left: 0;
-  margin: 0;
-  font-size: 14px;
-  line-height: 24px;
-  letter-spacing: -0.01em;
-  list-style-position: inside;
-}
-
-.main li:not(:last-of-type) {
-  margin-bottom: 8px;
-}
-
-.main code {
-  font-family: inherit;
-  background: var(--gray-alpha-100);
-  padding: 2px 4px;
-  border-radius: 4px;
-  font-weight: 600;
-}
-
-.ctas {
+.header {
   display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 24px;
   gap: 16px;
-}
-
-.ctas a {
-  appearance: none;
-  border-radius: 128px;
-  height: 48px;
-  padding: 0 20px;
-  border: none;
-  border: 1px solid transparent;
-  transition: background 0.2s, color 0.2s, border-color 0.2s;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  line-height: 20px;
-  font-weight: 500;
-}
-
-a.primary {
-  background: var(--foreground);
-  color: var(--background);
-  gap: 8px;
-}
-
-a.secondary {
-  border-color: var(--gray-alpha-200);
-  min-width: 180px;
-}
-
-.footer {
-  grid-row-start: 3;
-  display: flex;
-  gap: 24px;
-}
-
-.footer a {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.footer img {
+  width: 100%;
   flex-shrink: 0;
 }
 
-/* Enable hover only on non-touch devices */
-@media (hover: hover) and (pointer: fine) {
-  a.primary:hover {
-    background: var(--button-primary-hover);
-    border-color: transparent;
-  }
-
-  a.secondary:hover {
-    background: var(--button-secondary-hover);
-    border-color: transparent;
-  }
-
-  .footer a:hover {
-    text-decoration: underline;
-    text-underline-offset: 4px;
-  }
+.mainBox {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 960px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-@media (max-width: 600px) {
+.title {
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.langSelect {
+  cursor: pointer;
+}
+
+.langSelect :global(.ant-select-selector) {
+  border-radius: 8px !important;
+  border: 1px solid rgba(0, 0, 0, 0.06) !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+  min-width: 88px;
+  height: 40px !important;
+  padding: 0 12px !important;
+  display: flex !important;
+  align-items: center !important;
+  cursor: pointer !important;
+}
+
+.langSelect :global(.ant-select-selection-item) {
+  line-height: 38px !important;
+  font-weight: 600;
+}
+
+/* แถวบน: 4 การ์ดเท่ากัน + แท็ก (Move position อยู่กลางระหว่างการ์ด 2–3) */
+.controlsSection {
+  margin-bottom: 28px;
+  width: 100%;
+}
+
+.controlsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-rows: auto auto;
+  column-gap: 18px;
+  row-gap: 0;
+  max-width: 920px;
+  margin: 0 auto;
+}
+
+.shapeCard {
+  border-radius: 14px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+  overflow: hidden;
+  background: #fff !important;
+  width: 100%;
+  min-width: 0;
+  cursor: pointer;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box;
+}
+
+.controlCard1 {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+/* ขึ้น + ลง ในการ์ดเดียว (ปุ่มเดียว) */
+.controlCardUD {
+  grid-column: 2 / 4;
+  grid-row: 1;
+}
+
+.controlCard4 {
+  grid-column: 4;
+  grid-row: 1;
+}
+
+.shapeCard :global(.ant-card-body) {
+  padding: 16px 14px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 112px;
+  background: #fff !important;
+  transition: background 0.2s ease;
+  box-sizing: border-box;
+}
+
+/* hover: เปลี่ยนสี/เงาอย่างเดียว — ไม่ยุ่งขนาด/padding เพื่อไม่ให้รูปทรงเพี้ยน */
+.shapeCard:hover {
+  background: #ffa200 !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.14) !important;
+}
+
+.shapeCard:hover :global(.ant-card-body) {
+  background: #ffa200 !important;
+}
+
+.shapeCard:hover .shapeFill {
+  --shape: #ffffff;
+}
+
+.dualTriangles {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 48px;
+  width: 100%;
+  min-height: 72px;
+}
+
+.pillCell1 {
+  grid-column: 1;
+  grid-row: 2;
+  display: flex;
+  justify-content: center;
+  margin-top: -10px;
+  position: relative;
+  z-index: 1;
+}
+
+.pillCellMid {
+  grid-column: 2 / 4;
+  grid-row: 2;
+  display: flex;
+  justify-content: center;
+  margin-top: -10px;
+  position: relative;
+  z-index: 1;
+}
+
+.pillCell4 {
+  grid-column: 4;
+  grid-row: 2;
+  display: flex;
+  justify-content: center;
+  margin-top: -10px;
+  position: relative;
+  z-index: 1;
+}
+
+.sectionDivider {
+  width: 100%;
+  margin: 0 0 32px;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.12);
+  border: none;
+}
+
+.shapeCardInner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 80px;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 18px;
+  border: none;
+  border-radius: 999px;
+  background: #6eda78;
+  color: #fff;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+}
+
+.pill:focus-visible {
+  outline: 2px solid rgba(0, 0, 0, 0.35);
+  outline-offset: 2px;
+}
+
+.gridWrap {
+  width: 100%;
+}
+
+/* แถวบนชุดการ์ดชิดขวา แถวล่างชิดซ้าย (span 6 × 3 = 18/24 เหลือพื้นที่ให้ justify ทำงาน) */
+.gridRowTop {
+  margin-bottom: 20px;
+}
+
+.gridRowBottom {
+  margin-bottom: 0;
+}
+
+.gridCard {
+  border-radius: 14px !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08) !important;
+  cursor: pointer;
+  overflow: hidden;
+  background: #fff !important;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box;
+}
+
+.gridCard :global(.ant-card-body) {
+  padding: 10px 12px !important;
+  display: flex !important;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  min-height: 96px;
+  height: 96px;
+  max-height: 96px;
+  box-sizing: border-box;
+  background: #fff !important;
+  transition: background 0.2s ease;
+}
+
+.gridCard:hover {
+  background: #ffa200 !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.14) !important;
+}
+
+.gridCard:hover :global(.ant-card-body) {
+  background: #ffa200 !important;
+}
+
+.gridCard:hover .shapeFill {
+  --shape: #ffffff;
+}
+
+.gridShapeInner {
+  flex: 1 1 auto;
+  width: 100%;
+  min-height: 0;
+  max-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.gridShapeInner .trapezoid {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 2.6 / 1;
+  max-height: 100%;
+  flex-shrink: 1;
+}
+
+.gridShapeInner .parallelogram {
+  width: 92%;
+  height: auto;
+  aspect-ratio: 2.4 / 1;
+  max-height: 100%;
+  flex-shrink: 0;
+  align-self: center;
+}
+
+.gridShapeInner .rectangle {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3.6 / 1;
+  max-height: 100%;
+  flex-shrink: 0;
+}
+
+.gridShapeInner .oval {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 2.4 / 1;
+  max-height: 100%;
+  flex-shrink: 0;
+}
+
+.gridShapeInner .square,
+.gridShapeInner .circle {
+  width: 82%;
+  max-width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  max-height: 100%;
+  flex-shrink: 1;
+}
+
+/* รูปทรงทั้งหมด — สีเทา (บล็อกการ์ดเป็นพื้นขาวด้านบน) */
+.shapeFill {
+  --shape: #5a5a5a;
+}
+
+/* สามเหลี่ยมชุดเดียว: ชี้ขึ้น แล้วหมุนด้วย transform บน .triangleRotate */
+.triangleRotate {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-origin: center center;
+  flex-shrink: 0;
+}
+
+.triangle {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 36px 64px 36px;
+  border-color: transparent transparent var(--shape) transparent;
+}
+
+.triangleRotate.triangleDirLeft {
+  transform: rotate(-90deg);
+}
+
+.triangleRotate.triangleDirUp {
+  transform: rotate(0deg);
+}
+
+.triangleRotate.triangleDirRight {
+  transform: rotate(90deg);
+}
+
+.triangleRotate.triangleDirDown {
+  transform: rotate(180deg);
+}
+/*  */
+/* สี่เหลี่ยมคางหมู */
+.trapezoid {
+  width: 100%;
+  height: 100%;
+  background: var(--shape);
+  clip-path: polygon(12% 0, 88% 0, 100% 100%, 0 100%);
+}
+/* สี่เหลี่ยมด้านขนาน */
+.parallelogram {
+  width: 95%;
+  height: 95%;
+  background: var(--shape);
+  transform: skewX(18deg);
+  border-radius: 2px;
+}
+
+/* สี่เหลี่ยมผืนผ้า */
+.rectangle {
+  width: 100%;
+  height: 100%;
+  background: var(--shape);
+  border-radius: 2px;
+}
+/* วงรี */
+.oval {
+  width: 100%;
+  height: 100%;
+  background: var(--shape);
+  border-radius: 50%;
+}
+/* สี่เหลี่ยมจัตุรัส */
+.square {
+  width: 80px;
+  height: 80px;
+  background: var(--shape);
+  border-radius: 3px;
+}
+/* วงกลม */
+.circle {
+  width: 80px;
+  height: 80px;
+  background: var(--shape);
+  border-radius: 50%;
+}
+
+@media (max-width: 768px) {
   .page {
-    padding: 32px;
-    padding-bottom: 80px;
+    padding: 20px 16px 32px;
   }
 
-  .main {
-    align-items: center;
+  .title {
+    font-size: 22px;
   }
 
-  .main ol {
-    text-align: center;
+  .controlsGrid {
+    column-gap: 10px;
   }
 
-  .ctas {
-    flex-direction: column;
-  }
-
-  .ctas a {
-    font-size: 14px;
-    height: 40px;
-    padding: 0 16px;
-  }
-
-  a.secondary {
-    min-width: auto;
-  }
-
-  .footer {
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  .logo {
-    filter: invert();
+  .shapeCard :global(.ant-card-body) {
+    min-height: 100px;
+    padding: 12px 8px !important;
   }
 }
