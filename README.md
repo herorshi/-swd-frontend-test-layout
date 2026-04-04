@@ -1,37 +1,64 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# swd-frontend-test
 
-## Getting Started
+แอปเว็บที่สร้างด้วย [Next.js](https://nextjs.org) (App Router) สำหรับจัดการเลย์เอาต์และรูปทรงแบบอินเทอร์แอคทีฟ รองรับภาษาไทยและอังกฤษ
 
-First, run the development server:
+## ความต้องการของระบบ
+
+- **Node.js 20 ขึ้นไป** (แนะนำ LTS ล่าสุด)
+- ตัวจัดการแพ็กเกจ: `npm`, `yarn`, `pnpm` หรือ `bun` ก็ได้
+
+ตรวจสอบเวอร์ชัน:
+
+```bash
+node -v
+```
+
+## เทคโนโลยีหลัก
+
+| รายการ | หมายเหตุ |
+|--------|-----------|
+| Next.js 14 | App Router, `src/app/` |
+| React 18 | UI |
+| TypeScript | |
+| Ant Design 5 | คอมโพเนนต์ `Card`, `Row`, `Col`, `Select` ฯลฯ |
+| i18next | สลับภาษา EN / TH |
+
+## การติดตั้งและรัน
+
+ติดตั้งแพ็กเกจ:
+
+```bash
+npm install
+```
+
+รันโหมดพัฒนา (เปิดที่ [http://localhost:3000](http://localhost:3000)):
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+สคริปต์อื่นที่มี:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| คำสั่ง | คำอธิบาย |
+|--------|----------|
+| `npm run build` | สร้าง production build |
+| `npm run start` | รันเซิร์ฟเวอร์หลัง build |
+| `npm run lint` | รัน ESLint |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## เส้นทาง (routing)
 
-## Learn More
+- หน้าหลักของแอปอยู่ที่ **`/layout`**
+- การเข้า **`/`** หรือ path ที่ไม่ได้กำหนดไว้ จะถูกนำไปที่ **`/layout`** (ผ่าน `middleware` และ redirect ที่ root)
 
-To learn more about Next.js, take a look at the following resources:
+## โครงสร้างที่เกี่ยวข้อง (ย่อ)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `src/app/layout/page.tsx` — หน้า UI หลัก
+- `src/app/page.tsx` — redirect จาก `/` ไป `/layout`
+- `src/middleware.ts` — จัดการ redirect ไป `/layout`
+- `src/i18n/instance.ts` — ตั้งค่า i18next และข้อความแปล
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Deploy
 
-## Deploy on Vercel
+Deploy ได้บน [Vercel](https://vercel.com) หรือแพลตฟอร์มที่รองรับ Node.js สำหรับ Next.js โดยตั้งค่า **Node 20+** ตามที่โปรเจกต์กำหนด
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-# swd-frontend-test
+เอกสารเพิ่มเติม: [Next.js — Deploying](https://nextjs.org/docs/app/building-your-application/deploying)
