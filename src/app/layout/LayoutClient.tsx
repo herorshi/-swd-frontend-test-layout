@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useReducer, useState } from "react";
+import { Button, Flex, Select } from "antd";
 import i18n from "@/i18n/instance";
 import styles from "../page.module.css";
 
@@ -132,36 +133,40 @@ export default function LayoutClient() {
 
   return (
     <div className={styles.page}>
-      <header className={styles.header}>
+      <Flex className={styles.header} align="flex-start" justify="space-between" wrap>
         <h1 className={styles.title}>{t("title")}</h1>
-        <select
+        <Select
           className={styles.langSelect}
           value={lang}
-          onChange={(e) => {
-            const nextLang = e.target.value;
+          options={[
+            { value: "en", label: t("langEn") },
+            { value: "th", label: t("langTh") },
+          ]}
+          onChange={(nextLang) => {
             void i18n.changeLanguage(nextLang);
             setLang(nextLang);
           }}
-        >
-          <option value="en">{t("langEn")}</option>
-          <option value="th">{t("langTh")}</option>
-        </select>
-      </header>
+        />
+      </Flex>
 
       <div className={styles.mainBox}>
         <section className={styles.controlsSection} aria-label="Controls">
           <div className={styles.controlsGrid}>
-            <button
-              type="button"
+            <Button
+              htmlType="button"
+              block
+              aria-label={t("moveShapeLeft")}
               className={`${styles.shapeCard} ${styles.controlCard1}`}
               onClick={() => setOrder((o) => rotateLeft(o))}
             >
               <div className={styles.shapeCardBody}>
                 <Triangle dir="left" />
               </div>
-            </button>
-            <button
-              type="button"
+            </Button>
+            <Button
+              htmlType="button"
+              block
+              aria-label={t("movePosition")}
               className={`${styles.shapeCard} ${styles.controlCardUD}`}
               onClick={() => setBottomRowsStaggerSwapped((prev) => !prev)}
             >
@@ -171,43 +176,45 @@ export default function LayoutClient() {
                   <Triangle dir="down" inline />
                 </div>
               </div>
-            </button>
-            <button
-              type="button"
+            </Button>
+            <Button
+              htmlType="button"
+              block
+              aria-label={t("moveShapeRight")}
               className={`${styles.shapeCard} ${styles.controlCard4}`}
               onClick={() => setOrder((o) => rotateRight(o))}
             >
               <div className={styles.shapeCardBody}>
                 <Triangle dir="right" />
               </div>
-            </button>
+            </Button>
 
             <div className={styles.pillCell1}>
-              <button
-                type="button"
+              <Button
+                htmlType="button"
                 className={styles.pill}
                 onClick={() => setOrder((o) => rotateLeft(o))}
               >
                 {t("moveShapeLeft")}
-              </button>
+              </Button>
             </div>
             <div className={styles.pillCellMid}>
-              <button
-                type="button"
+              <Button
+                htmlType="button"
                 className={styles.pill}
                 onClick={() => setBottomRowsStaggerSwapped((prev) => !prev)}
               >
                 {t("movePosition")}
-              </button>
+              </Button>
             </div>
             <div className={styles.pillCell4}>
-              <button
-                type="button"
+              <Button
+                htmlType="button"
                 className={styles.pill}
                 onClick={() => setOrder((o) => rotateRight(o))}
               >
                 {t("moveShapeRight")}
-              </button>
+              </Button>
             </div>
           </div>
         </section>
@@ -217,8 +224,9 @@ export default function LayoutClient() {
         <div className={styles.gridWrap}>
           <div className={`${styles.gridRow} ${styles.gridRowTop} ${firstShapeRowClass}`}>
             {row1.map((id, index) => (
-              <button
-                type="button"
+              <Button
+                htmlType="button"
+                block
                 className={styles.gridCell}
                 key={`${id}-r1-${index}`}
                 onClick={() => setOrder((o) => shuffleOrder(o))}
@@ -228,15 +236,16 @@ export default function LayoutClient() {
                     <ShapeGraphic id={id} />
                   </div>
                 </div>
-              </button>
+              </Button>
             ))}
           </div>
           <div
             className={`${styles.gridRow} ${styles.gridRowBottom} ${secondShapeRowClass}`}
           >
             {row2.map((id, index) => (
-              <button
-                type="button"
+              <Button
+                htmlType="button"
+                block
                 className={styles.gridCell}
                 key={`${id}-r2-${index}`}
                 onClick={() => setOrder((o) => shuffleOrder(o))}
@@ -246,7 +255,7 @@ export default function LayoutClient() {
                     <ShapeGraphic id={id} />
                   </div>
                 </div>
-              </button>
+              </Button>
             ))}
           </div>
         </div>
