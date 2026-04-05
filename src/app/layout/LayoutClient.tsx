@@ -1,8 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useReducer, useState } from "react";
-import { Card, Col, ConfigProvider, Row, Select } from "antd";
 import i18n from "@/i18n/instance";
+import styles from "../page.module.css";
 
 type ShapeId =
   | "trapezoid"
@@ -11,8 +11,6 @@ type ShapeId =
   | "oval"
   | "square"
   | "circle";
-
-type StylesMap = Readonly<Record<string, string>>;
 
 const DEFAULT_ORDER: ShapeId[] = [
   "square",
@@ -44,10 +42,8 @@ function shuffleOrder(ids: ShapeId[]): ShapeId[] {
 
 function ShapeGraphic({
   id,
-  styles,
 }: {
   id: ShapeId;
-  styles: StylesMap;
 }) {
   const inner = useMemo(() => {
     switch (id) {
@@ -68,7 +64,7 @@ function ShapeGraphic({
       default:
         return null;
     }
-  }, [id, styles]);
+  }, [id]);
 
   return (
     <div className={`${styles.shapeCardInner} ${styles.shapeFill}`}>
@@ -92,22 +88,22 @@ function useI18nRerender() {
 function Triangle({
   dir,
   inline,
-  styles,
 }: {
   dir: "left" | "right" | "up" | "down";
   inline?: boolean;
-  styles: StylesMap;
 }) {
-  const triangleDirClass: Record<"left" | "right" | "up" | "down", string> = {
-    left: styles.triangleDirLeft,
-    up: styles.triangleDirUp,
-    right: styles.triangleDirRight,
-    down: styles.triangleDirDown,
-  };
+  const triangleDirClass =
+    dir === "left"
+      ? styles.triangleDirLeft
+      : dir === "up"
+        ? styles.triangleDirUp
+        : dir === "right"
+          ? styles.triangleDirRight
+          : styles.triangleDirDown;
 
   const core = (
     <div
-      className={`${styles.triangleRotate} ${triangleDirClass[dir]} ${styles.shapeFill}`}
+      className={`${styles.triangleRotate} ${triangleDirClass} ${styles.shapeFill}`}
     >
       <div className={styles.triangle} />
     </div>
@@ -117,7 +113,7 @@ function Triangle({
   return <div className={styles.shapeCardInner}>{core}</div>;
 }
 
-export default function LayoutClient({ styles }: { styles: StylesMap }) {
+export default function LayoutClient() {
   const t = useI18nRerender();
   const [order, setOrder] = useState<ShapeId[]>(DEFAULT_ORDER);
   const [lang, setLang] = useState(() => i18n.language);
@@ -127,136 +123,134 @@ export default function LayoutClient({ styles }: { styles: StylesMap }) {
   const row1 = order.slice(0, 3);
   const row2 = order.slice(3, 6);
 
-  const firstShapeRowJustify = bottomRowsStaggerSwapped ? "start" : "end";
-  const secondShapeRowJustify = bottomRowsStaggerSwapped ? "end" : "start";
+  const firstShapeRowClass = bottomRowsStaggerSwapped
+    ? styles.gridRowStart
+    : styles.gridRowEnd;
+  const secondShapeRowClass = bottomRowsStaggerSwapped
+    ? styles.gridRowEnd
+    : styles.gridRowStart;
 
   return (
-    <ConfigProvider
-      theme={{
-        token: {
-          colorBgContainer: "#ffffff",
-          borderRadiusLG: 14,
-        },
-      }}
-    >
-      <div className={styles.page}>
-        <header className={styles.header}>
-          <h1 className={styles.title}>{t("title")}</h1>
-          <Select
-            className={styles.langSelect}
-            value={lang}
-            popupMatchSelectWidth={false}
-            options={[
-              { value: "en", label: t("langEn") },
-              { value: "th", label: t("langTh") },
-            ]}
-            onChange={(v) => {
-              void i18n.changeLanguage(v);
-              setLang(v);
-            }}
-          />
-        </header>
+    <div className={styles.page}>
+      <header className={styles.header}>
+        <h1 className={styles.title}>{t("title")}</h1>
+        <select
+          className={styles.langSelect}
+          value={lang}
+          onChange={(e) => {
+            const nextLang = e.target.value;
+            void i18n.changeLanguage(nextLang);
+            setLang(nextLang);
+          }}
+        >
+          <option value="en">{t("langEn")}</option>
+          <option value="th">{t("langTh")}</option>
+        </select>
+      </header>
 
-        <div className={styles.mainBox}>
-          <section className={styles.controlsSection} aria-label="Controls">
-            <div className={styles.controlsGrid}>
-              <Card
-                className={`${styles.shapeCard} ${styles.controlCard1}`}
-                variant="borderless"
+      <div className={styles.mainBox}>
+        <section className={styles.controlsSection} aria-label="Controls">
+          <div className={styles.controlsGrid}>
+            <button
+              type="button"
+              className={`${styles.shapeCard} ${styles.controlCard1}`}
+              onClick={() => setOrder((o) => rotateLeft(o))}
+            >
+              <div className={styles.shapeCardBody}>
+                <Triangle dir="left" />
+              </div>
+            </button>
+            <button
+              type="button"
+              className={`${styles.shapeCard} ${styles.controlCardUD}`}
+              onClick={() => setBottomRowsStaggerSwapped((prev) => !prev)}
+            >
+              <div className={styles.shapeCardBody}>
+                <div className={styles.dualTriangles}>
+                  <Triangle dir="up" inline />
+                  <Triangle dir="down" inline />
+                </div>
+              </div>
+            </button>
+            <button
+              type="button"
+              className={`${styles.shapeCard} ${styles.controlCard4}`}
+              onClick={() => setOrder((o) => rotateRight(o))}
+            >
+              <div className={styles.shapeCardBody}>
+                <Triangle dir="right" />
+              </div>
+            </button>
+
+            <div className={styles.pillCell1}>
+              <button
+                type="button"
+                className={styles.pill}
                 onClick={() => setOrder((o) => rotateLeft(o))}
               >
-                <Triangle dir="left" styles={styles} />
-              </Card>
-              <Card
-                className={`${styles.shapeCard} ${styles.controlCardUD}`}
-                variant="borderless"
+                {t("moveShape")}
+              </button>
+            </div>
+            <div className={styles.pillCellMid}>
+              <button
+                type="button"
+                className={styles.pill}
                 onClick={() => setBottomRowsStaggerSwapped((prev) => !prev)}
               >
-                <div className={styles.dualTriangles}>
-                  <Triangle dir="up" inline styles={styles} />
-                  <Triangle dir="down" inline styles={styles} />
-                </div>
-              </Card>
-              <Card
-                className={`${styles.shapeCard} ${styles.controlCard4}`}
-                variant="borderless"
-                onClick={() => setOrder((o) => rotateRight(o))}
-              >
-                <Triangle dir="right" styles={styles} />
-              </Card>
-
-              <div className={styles.pillCell1}>
-                <button
-                  type="button"
-                  className={styles.pill}
-                  onClick={() => setOrder((o) => rotateLeft(o))}
-                >
-                  {t("moveShape")}
-                </button>
-              </div>
-              <div className={styles.pillCellMid}>
-                <button
-                  type="button"
-                  className={styles.pill}
-                  onClick={() => setBottomRowsStaggerSwapped((prev) => !prev)}
-                >
-                  {t("movePosition")}
-                </button>
-              </div>
-              <div className={styles.pillCell4}>
-                <button
-                  type="button"
-                  className={styles.pill}
-                  onClick={() => setOrder((o) => rotateLeft(o))}
-                >
-                  {t("moveShape")}
-                </button>
-              </div>
+                {t("movePosition")}
+              </button>
             </div>
-          </section>
+            <div className={styles.pillCell4}>
+              <button
+                type="button"
+                className={styles.pill}
+                onClick={() => setOrder((o) => rotateLeft(o))}
+              >
+                {t("moveShape")}
+              </button>
+            </div>
+          </div>
+        </section>
 
-          <div className={styles.sectionDivider} />
+        <div className={styles.sectionDivider} />
 
-          <div className={styles.gridWrap}>
-            <Row
-              gutter={[20, 20]}
-              justify={firstShapeRowJustify}
-              wrap={false}
-              className={styles.gridRowTop}
-            >
-              {row1.map((id, index) => (
-                <Col xs={8} md={6} key={`${id}-r1-${index}`}>
-                  <Card
-                    className={styles.gridCard}
-                    variant="borderless"
-                    onClick={() => setOrder((o) => shuffleOrder(o))}
-                  >
-                    <ShapeGraphic id={id} styles={styles} />
-                  </Card>
-                </Col>
-              ))}
-            </Row>
-            <Row
-              gutter={[20, 20]}
-              justify={secondShapeRowJustify}
-              wrap={false}
-              className={styles.gridRowBottom}
-            >
-              {row2.map((id, index) => (
-                <Col xs={8} md={6} key={`${id}-r2-${index}`}>
-                  <Card
-                    className={styles.gridCard}
-                    variant="borderless"
-                    onClick={() => setOrder((o) => shuffleOrder(o))}
-                  >
-                    <ShapeGraphic id={id} styles={styles} />
-                  </Card>
-                </Col>
-              ))}
-            </Row>
+        <div className={styles.gridWrap}>
+          <div className={`${styles.gridRow} ${styles.gridRowTop} ${firstShapeRowClass}`}>
+            {row1.map((id, index) => (
+              <button
+                type="button"
+                className={styles.gridCell}
+                key={`${id}-r1-${index}`}
+                onClick={() => setOrder((o) => shuffleOrder(o))}
+              >
+                <div className={styles.gridCard}>
+                  <div className={styles.gridCardBody}>
+                    <ShapeGraphic id={id} />
+                  </div>
+                </div>
+              </button>
+            ))}
+          </div>
+          <div
+            className={`${styles.gridRow} ${styles.gridRowBottom} ${secondShapeRowClass}`}
+          >
+            {row2.map((id, index) => (
+              <button
+                type="button"
+                className={styles.gridCell}
+                key={`${id}-r2-${index}`}
+                onClick={() => setOrder((o) => shuffleOrder(o))}
+              >
+                <div className={styles.gridCard}>
+                  <div className={styles.gridCardBody}>
+                    <ShapeGraphic id={id} />
+                  </div>
+                </div>
+              </button>
+            ))}
           </div>
         </div>
       </div>
-    </ConfigProvider>
+    </div>
   );
 }

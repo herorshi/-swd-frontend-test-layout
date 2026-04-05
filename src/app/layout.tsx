@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { AntdRegistry } from "@ant-design/nextjs-registry";
 import localFont from "next/font/local";
 import "./globals.css";
 
@@ -26,9 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <AntdRegistry>{children}</AntdRegistry>
-      </body>
+      <body className={`${geistSans.variable} ${geistMono.variable}`}>{children}</body>
     </html>
   );
 }

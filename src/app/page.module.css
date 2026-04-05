@@ -48,24 +48,27 @@
 }
 
 .langSelect {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
   cursor: pointer;
-}
-
-.langSelect :global(.ant-select-selector) {
   border-radius: 8px !important;
   border: 1px solid rgba(0, 0, 0, 0.06) !important;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
   min-width: 88px;
-  height: 40px !important;
-  padding: 0 12px !important;
-  display: flex !important;
-  align-items: center !important;
-  cursor: pointer !important;
-}
-
-.langSelect :global(.ant-select-selection-item) {
-  line-height: 38px !important;
+  height: 40px;
+  padding: 0 36px 0 12px;
+  background-color: #fff;
+  background-image: linear-gradient(45deg, transparent 50%, #444 50%),
+    linear-gradient(135deg, #444 50%, transparent 50%);
+  background-position: calc(100% - 18px) calc(50% - 2px),
+    calc(100% - 12px) calc(50% - 2px);
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+  font: inherit;
   font-weight: 600;
+  line-height: 38px;
+  color: #000;
 }
 
 /* แถวบน: 4 การ์ดเท่ากัน + แท็ก (Move position อยู่กลางระหว่างการ์ด 2–3) */
@@ -85,6 +88,8 @@
 }
 
 .shapeCard {
+  border: 0;
+  padding: 0;
   border-radius: 14px !important;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
   overflow: hidden;
@@ -92,6 +97,8 @@
   width: 100%;
   min-width: 0;
   cursor: pointer;
+  text-align: inherit;
+  font: inherit;
   transition: background 0.2s ease, box-shadow 0.2s ease;
   box-sizing: border-box;
 }
@@ -112,7 +119,7 @@
   grid-row: 1;
 }
 
-.shapeCard :global(.ant-card-body) {
+.shapeCardBody {
   padding: 16px 14px !important;
   display: flex;
   align-items: center;
@@ -129,7 +136,7 @@
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.14) !important;
 }
 
-.shapeCard:hover :global(.ant-card-body) {
+.shapeCard:hover .shapeCardBody {
   background: #ffa200 !important;
 }
 
@@ -218,13 +225,52 @@
   width: 100%;
 }
 
-/* แถวบนชุดการ์ดชิดขวา แถวล่างชิดซ้าย (span 6 × 3 = 18/24 เหลือพื้นที่ให้ justify ทำงาน) */
+.gridRow {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+  width: 100%;
+}
+
+.gridRowStart > :nth-child(1) {
+  grid-column: 1;
+}
+
+.gridRowStart > :nth-child(2) {
+  grid-column: 2;
+}
+
+.gridRowStart > :nth-child(3) {
+  grid-column: 3;
+}
+
+.gridRowEnd > :nth-child(1) {
+  grid-column: 2;
+}
+
+.gridRowEnd > :nth-child(2) {
+  grid-column: 3;
+}
+
+.gridRowEnd > :nth-child(3) {
+  grid-column: 4;
+}
+
 .gridRowTop {
   margin-bottom: 20px;
 }
 
 .gridRowBottom {
   margin-bottom: 0;
+}
+
+.gridCell {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  text-align: inherit;
+  font: inherit;
+  cursor: pointer;
 }
 
 .gridCard {
@@ -237,7 +283,7 @@
   box-sizing: border-box;
 }
 
-.gridCard :global(.ant-card-body) {
+.gridCardBody {
   padding: 10px 12px !important;
   display: flex !important;
   flex-direction: column;
@@ -256,11 +302,16 @@
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.14) !important;
 }
 
-.gridCard:hover :global(.ant-card-body) {
+.gridCell:hover .gridCard {
+  background: #ffa200 !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.14) !important;
+}
+
+.gridCell:hover .gridCardBody {
   background: #ffa200 !important;
 }
 
-.gridCard:hover .shapeFill {
+.gridCell:hover .shapeFill {
   --shape: #ffffff;
 }
 
@@ -414,7 +465,7 @@
     column-gap: 10px;
   }
 
-  .shapeCard :global(.ant-card-body) {
+  .shapeCardBody {
     min-height: 100px;
     padding: 12px 8px !important;
   }
