@@ -4,7 +4,8 @@ const resources = {
   en: {
     translation: {
       title: "Layout & Style",
-      moveShape: "Move shape",
+      moveShapeLeft: "Move shape left",
+      moveShapeRight: "Move shape right",
       movePosition: "Move position",
       langEn: "EN",
       langTh: "TH",
@@ -19,7 +20,8 @@ const resources = {
   th: {
     translation: {
       title: "จัดการหน้าเว็บ",
-      moveShape: "เลื่อนรูปทรง",
+      moveShapeLeft: "เลื่อนรูปทรงซ้าย",
+      moveShapeRight: "เลื่อนรูปทรงขวา",
       movePosition: "เลื่อนตำแหน่ง",
       langEn: "EN",
       langTh: "TH",

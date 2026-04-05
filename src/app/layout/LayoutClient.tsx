@@ -188,7 +188,7 @@ export default function LayoutClient() {
                 className={styles.pill}
                 onClick={() => setOrder((o) => rotateLeft(o))}
               >
-                {t("moveShape")}
+                {t("moveShapeLeft")}
               </button>
             </div>
             <div className={styles.pillCellMid}>
@@ -204,9 +204,9 @@ export default function LayoutClient() {
               <button
                 type="button"
                 className={styles.pill}
-                onClick={() => setOrder((o) => rotateLeft(o))}
+                onClick={() => setOrder((o) => rotateRight(o))}
               >
-                {t("moveShape")}
+                {t("moveShapeRight")}
               </button>
             </div>
           </div>
